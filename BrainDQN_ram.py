@@ -43,7 +43,7 @@ class BrainDQN_ram:
         self.createTrainingMethod()
 
         # saving and loading networks
-        self.saver = tf.train.Saver()
+        self.saver = tf.train.Saver(max_to_keep=None)
         self.session = tf.InteractiveSession()
         self.session.run(tf.global_variables_initializer())
         checkpoint = tf.train.get_checkpoint_state("saved_networks")
@@ -116,7 +116,7 @@ class BrainDQN_ram:
         })
 
         # save network every 100000 iteration
-        if self.timeStep % 500000==0:
+        if self.timeStep % 50000==0:
             self.saver.save(self.session, 'saved_networks/' + 'network' + '-dqn', global_step=self.timeStep)
 
         if self.timeStep % UPDATE_TIME == 0:
@@ -153,7 +153,7 @@ class BrainDQN_ram:
             action_index = random.randrange(self.real_actions)
             action[action_index] = 1
         else:
-            action_index = np.argmax(QValue)
+            action_index = np.argmax(QValue[:self.real_actions])
             action[action_index] = 1
 
         # change episilon

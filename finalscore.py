@@ -50,8 +50,6 @@ def testplay():
             # brain.setInitState(observation)
             brain.setInitState(observation_gray)
 
-
-
         action = brain.getAction(done)
         nextObservation,reward,done,info = env.step(np.argmax(action))
         nextObservation = preprocess(nextObservation)
